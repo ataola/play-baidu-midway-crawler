@@ -1,5 +1,7 @@
 import { createApp, close, createHttpRequest } from '@midwayjs/mock';
 import { Framework, Application } from '@midwayjs/koa';
+import { deepStrictEqual, notDeepStrictEqual } from 'assert';
+import { IPackResp, IHomeData } from '../../src/interface';
 
 describe('test/controller/home.test.ts', () => {
   let app: Application;
@@ -21,45 +23,47 @@ describe('test/controller/home.test.ts', () => {
     await close(app);
   });
 
-  it('should GET /', async () => {
+  // it('should GET /', async () => {
+  //   // make request
+  //   const result = await createHttpRequest(app).get('/');
+
+  //   // use expect by jest
+  //   expect(result.status).toBe(200);
+  //   expect(result.text).toBe('Hello Midwayjs!');
+  // });
+
+  it.only('should GET /useRegExp', async () => {
+    const startTime = Date.now();
     // make request
-    const result = await createHttpRequest(app).get('/');
+    const result: any = await createHttpRequest(app).get('/useRegExp');
+    const cost = Date.now() - startTime;
 
-    // use expect by jest
-    expect(result.status).toBe(200);
-    expect(result.text).toBe('Hello Midwayjs!');
+    // 2. 如果接口请求时间超过1秒钟，则Assert断言失败
+    const {
+      data: { imgSrc },
+    } = result.body as IPackResp<IHomeData>;
 
-    // close app
-    await close(app);
+    expect(imgSrc).not.toBe('//www.baidu.com/img/bd_logo1.png');
+    notDeepStrictEqual(imgSrc, '//www.baidu.com/img/bd_logo1.png');
+    expect(cost).toBeLessThanOrEqual(1000);
+    expect(imgSrc).toBe('//www.baidu.com/img/flexible/logo/pc/index.png');
+    deepStrictEqual(imgSrc, '//www.baidu.com/img/flexible/logo/pc/index.png');
   });
 
-  it('should GET /useRegExp', async () => {
-     setTimeout(async () => {
-       // make request
-       const result: any = await createHttpRequest(app)
-         .get('/useRegExp')
-         .set('x-timeout', '1000');
+  it.only('should GET /useCheerio', async () => {
+    const startTime = Date.now();
+    // make request
+    const result: any = await createHttpRequest(app).get('/useCheerio');
+    const cost = Date.now() - startTime;
 
-       // use expect by jest
-       expect(result).toBe('//www.baidu.com/img/bd_logo1.png');
+    const {
+      data: { imgSrc },
+    } = result.body as IPackResp<IHomeData>;
 
-       // close app
-       await close(app);
-     }, 5000)
-  });
-
-  it('should GET /useCheerio', async () => {
-    setTimeout(async () => {
-      // make request
-      const result: any = await createHttpRequest(app)
-        .get('/useCheerio')
-        .set('x-timeout', '1000');
-
-      // use expect by jest
-      expect(result).toBe('//www.baidu.com/img/bd_logo1.png');
-
-      // close app
-      await close(app);
-    }, 3000)
+    expect(imgSrc).not.toBe('//www.baidu.com/img/bd_logo1.png');
+    notDeepStrictEqual(imgSrc, '//www.baidu.com/img/bd_logo1.png');
+    expect(cost).toBeLessThanOrEqual(1000);
+    expect(imgSrc).toBe('//www.baidu.com/img/flexible/logo/pc/index.png');
+    deepStrictEqual(imgSrc, '//www.baidu.com/img/flexible/logo/pc/index.png');
   });
 });

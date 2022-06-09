@@ -1,27 +1,38 @@
 import { Controller, Get } from '@midwayjs/decorator';
 import { load } from 'cheerio';
-import { getPage } from '../util/index';
+import { getPage, packResp } from '../util/index';
+import { IPackResp, IHomeData } from '../interface';
 
+// https://midwayjs.org/docs/testing
 @Controller('/')
 export class HomeController {
   @Get('/')
   async home(): Promise<string> {
-    return 'Hello Midwayjs!';
-  }
+    return '<h1>MidWay Demo - Crawler Baidu Index Page Element</h1> \
+            <ul> \
+              <li><a href="/useRegExp" target="_blank">implement by RegExp</a></li> \
+              <li><a href="/useCheerio" target="_blank">implement by npm package - Cheerio</a></li> \
+            </ul> \
+            <h2>What \'s More</h2> \
+            <ul> \
+              <li><a href="https://github.com/ataola/play-baidu-midway-crawler">Github Repo</a></li> \
+            </ul>';
+}
 
   @Get('/useRegExp')
-  async useRegExp(): Promise<any> {
+  async useRegExp(): Promise<IPackResp<IHomeData>> {
     const ret = await getPage();
+    // 匹配id为lg的div正则
     const reDivLg = /(?<=<div.*?id="lg".*?>)(.*?)(?=<\/div>)/gi;
-    const reImg = /<img\b.*?(?:>|\/>)/gi;
+    // 匹配img标签的src属性
     const reSrc = /<img.*?src="(.*?)".*?\/?>/i;
-    const imgArr = ret.match(reDivLg)[0].match(reImg);
-    const imgSrc = imgArr.map(item => item.match(reSrc)[1]).join(',');
-    return { func: 'useRegExp', imgSrc };
+    const imgSrc = ret.match(reDivLg)[0].match(reSrc)[1];
+
+    return packResp({ func: 'useRegExp', imgSrc });
   }
 
   @Get('/useCheerio')
-  async useCheerio(): Promise<any> {
+  async useCheerio(): Promise<IPackResp<IHomeData>> {
     const ret = await getPage();
     const $ = load(ret);
     const imgSrc = $('div[id=lg]')
@@ -31,9 +42,7 @@ export class HomeController {
       })
       .get()
       .join(',');
-    return {
-      func: 'useCheerio',
-      imgSrc,
-    };
+
+    return packResp({ func: 'useCheerio', imgSrc });
   }
 }
