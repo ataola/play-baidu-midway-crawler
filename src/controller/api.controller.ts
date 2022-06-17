@@ -6,10 +6,12 @@ import {
   Post,
   Body,
   Param,
+  File,
+  Fields,
 } from '@midwayjs/decorator';
 import { Context } from '@midwayjs/koa';
 import { UserService } from '../service/user.service';
-import { CreateCatDto, Cat } from '../dto/cat.dto';
+import { CreateCatDto, Cat, createFileDto } from '../dto/cat.dto';
 import { UserDTO } from '../dto/user.dto';
 import { CatService } from '../service/cat.service';
 import {
@@ -18,13 +20,15 @@ import {
   ApiResponse,
   ApiBearerAuth,
   ApiOperation,
+  ApiBody,
+  BodyContentType,
 } from '@midwayjs/swagger';
 
 // @ApiHeader({
 //   name: 'Authorization',
 //   description: '示例值： Bearer {{TOKEN}},说明：token',
 // })
-@ApiTags(['接口测试相关'])
+@ApiTags(['API'])
 @ApiBearerAuth()
 @Controller('/api', { description: '用户账号信息相关，需要登录' })
 export class APIController {
@@ -75,5 +79,21 @@ export class APIController {
   })
   findOne(@Param('id') id: number, @Query('test') test: any): Promise<Cat> {
     return this.catService.findOne(id);
+  }
+
+  @Post('/upload:id', { summary: 'test' })
+  @ApiBody({
+    description: 'this is body',
+    contentType: BodyContentType.Multipart,
+  })
+  async createFile(@Body() cf: createFileDto): Promise<createFileDto> {
+    return this.catService.createFile(cf);
+  }
+
+  @Post('/test')
+  @ApiBody({ description: 'hello file' })
+  @ApiBody({ description: 'hello fields', type: Cat })
+  async upload(@File() f: any, @Fields() data: Cat) {
+    return null;
   }
 }

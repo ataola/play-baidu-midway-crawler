@@ -31,3 +31,12 @@ export class Cat {
   age: number;
   hello: HelloWorld;
 }
+
+export class createFileDto {
+  @ApiProperty({
+    type: 'string',
+    format: 'binary',
+    description: 'this is file test',
+  })
+  file: any;
+}

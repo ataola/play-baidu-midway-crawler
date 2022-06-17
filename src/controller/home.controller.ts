@@ -16,6 +16,7 @@ export class HomeController {
             <h2>What \'s More</h2> \
             <ul> \
               <li><a href="https://github.com/ataola/play-baidu-midway-crawler">Github Repo</a></li> \
+              <li><a href="/swagger-ui/index.html">Swagger</a></i> \
             </ul>';
 }
 

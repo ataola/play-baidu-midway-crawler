@@ -1,5 +1,5 @@
 import { Provide } from '@midwayjs/decorator';
-import { CreateCatDto, Cat, HelloWorld } from '../dto/cat.dto';
+import { CreateCatDto, Cat, HelloWorld, createFileDto } from '../dto/cat.dto';
 
 @Provide()
 export class CatService {
@@ -8,6 +8,10 @@ export class CatService {
       id: Math.random(),
       ...options,
     };
+  }
+
+  async createFile(options: createFileDto): Promise<createFileDto> {
+    return options;
   }
 
   async findOne(id: number): Promise<Cat> {
