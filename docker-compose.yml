@@ -1,0 +1,9 @@
+version: "3"
+services:
+  midway-services:
+    container_name: midway-demo
+    image: midway-demo
+    restart: always
+    build: .
+    ports:
+      - "8090:8090"

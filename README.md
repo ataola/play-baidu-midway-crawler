@@ -28,4 +28,14 @@ $ npm start
 - Use `npm test` to run unit test.
 
 
+### Docker
+
+```shell
+docker build -t midway-demo .
+
+docker run -d -p 8090:8090  midway-demo
+
+```
+
+
 [midway]: https://midwayjs.org
