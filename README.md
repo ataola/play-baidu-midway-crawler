@@ -11,7 +11,7 @@ see [midway docs][midway] for more detail.
 ```bash
 $ npm i
 $ npm run dev
-$ open http://localhost:7001/
+$ open http://localhost:8090/
 $ swagger http://127.0.0.1:8090/swagger-ui/index.html
 $ swagger http://127.0.0.1:8090/swagger-ui/index.json
 ```
@@ -33,7 +33,7 @@ $ npm start
 ```shell
 docker build -t midway-demo .
 
-docker run --privileged -itd -p 7001:7001  --name midway midway-demo
+docker run --privileged -itd -p 8090:8090  --name midway midway-demo
 ```
 
 
