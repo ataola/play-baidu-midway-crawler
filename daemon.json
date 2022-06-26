@@ -1,0 +1,7 @@
+{
+  "registry-mirrors": [
+    "https://fv50tv30.mirror.aliyuncs.com",
+    "https://reg-mirror.qiniu.com"
+  ],
+  "dns": ["114.114.114.114", "8.8.8.8"]
+}
